@@ -1,6 +1,9 @@
 # Dont push the output images
 outputs/*
 
+# Dont push the combined images
+combined/*
+
 # Dont push data source
 dataset-resized.zip
 dataset-resized/glass/*

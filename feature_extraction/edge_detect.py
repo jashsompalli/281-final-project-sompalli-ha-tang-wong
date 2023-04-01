@@ -75,10 +75,39 @@ def executor(category):
             extractor.blur_image()
 
 
+def combiner(category, blur_type):
+
+    '''
+    Function to take the edges detected and overlay them onto the original
+    images. Kinda messy, but does what needs to be done
+    '''
+
+    combined_loc = Path(f'../combined/{category}/{blur_type}')
+
+    original_loc = DATA / category
+    original_files = [str(original_loc / i) for i in os.listdir(original_loc)]
+    blur_loc = Path(f'../outputs/{category}/{blur_type}')
+    blur_files = [str(blur_loc / i) for i in os.listdir(blur_loc)]
+
+    for i, v in enumerate(original_files):
+
+        original_img = cv2.imread(v)
+        edges = cv2.imread(blur_files[i])
+        filename = v.split('/')[-1]
+
+        output = cv2.addWeighted(original_img, 0.5, edges, 0.5, 0.0)
+
+        cv2.imwrite(str(combined_loc / filename), output)
+
+
 if __name__ == '__main__':
 
     # Main routine to get the edges for all images using
     # gaussian, median, and mean blurring
 
+    blur_methods = ['gaussian', 'mean', 'median']
+
     for category in DATA_CATEGORIES:
         executor(category)
+        for method in blur_methods:
+            combiner(category, method)
