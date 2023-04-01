@@ -6,7 +6,6 @@ from pathlib import Path
 
 DATA = Path('../dataset-resized')
 DATA_CATEGORIES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-PROCESSED = Path('../processed')
 
 # Edge detection class.
 
