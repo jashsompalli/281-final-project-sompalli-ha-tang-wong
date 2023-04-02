@@ -1,3 +1,6 @@
+# ignore ds store
+.DS_Store
+
 # Dont push the output images
 outputs/*
 
