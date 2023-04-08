@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 DATA = Path('../dataset-resized')
 DATA_CATEGORIES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-EDGES = Path('../outputs')
+# EDGES = Path('../outputs')
 
 # Color histogram extraction class.
 
@@ -19,11 +19,12 @@ class ColorHist:
     This does not rely on segmentation
     '''
 
-    def __init__(self, image_path):
+    def __init__(self, image_path, relative_output_dir="../outputs"):
 
         self.filename = str(image_path.split('/')[-1])
         self.category = str(image_path.split('/')[-2])
         self.img = cv2.imread(image_path)
+        self.EDGES = Path(relative_output_dir)
 
     def get_color_hist(self):
 
@@ -33,7 +34,7 @@ class ColorHist:
 
     def get_corresponding_edge(self):
 
-        self.corresponding_edge = EDGES / self.category / 'gaussian' / self.filename
+        self.corresponding_edge = self.EDGES / self.category / 'gaussian' / self.filename
         self.corresponding_edge = str(self.corresponding_edge.resolve())
         self.corresponding_edge = cv2.imread(self.corresponding_edge)
 
