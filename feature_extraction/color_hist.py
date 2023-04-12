@@ -28,6 +28,10 @@ class ColorHist:
 
     def get_color_hist(self):
 
+        '''
+        THIS HAS AN ISSUE
+        '''
+
         self.red_channel = cv2.calcHist(self.img, [0], None, [512], [0, 256])
         self.green_channel = cv2.calcHist(self.img, [1], None, [512], [0, 256])
         self.blue_channel = cv2.calcHist(self.img, [2], None, [512], [0, 256])
@@ -65,3 +69,12 @@ class ColorHist:
         plt.show()
         plt.plot(self.blue_channel, label='blue')
         plt.show()
+
+
+if __name__ == '__main__':
+
+    obj = ColorHist(str(DATA / 'glass' / 'glass276.jpg'))
+    obj.get_color_hist()
+    obj.get_corresponding_edge()
+    obj.get_edge_map()
+    obj.show_plots()
