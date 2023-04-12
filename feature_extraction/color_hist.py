@@ -29,12 +29,13 @@ class ColorHist:
     def get_color_hist(self):
 
         '''
-        THIS HAS AN ISSUE
+        This does NOT have an issue
         '''
 
         self.red_channel = cv2.calcHist(self.img, [0], None, [512], [0, 256])
         self.green_channel = cv2.calcHist(self.img, [1], None, [512], [0, 256])
         self.blue_channel = cv2.calcHist(self.img, [2], None, [512], [0, 256])
+
 
     def get_corresponding_edge(self):
 
