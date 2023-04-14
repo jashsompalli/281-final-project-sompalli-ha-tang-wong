@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Define the static things that we need
 
-DATA = Path('../dataset-resized')
+DATA = Path('/home/jash/CV_final/dataset-resized')
 DATA_CATEGORIES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 
 # Edge detection class.

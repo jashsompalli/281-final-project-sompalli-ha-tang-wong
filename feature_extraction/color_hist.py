@@ -1,5 +1,8 @@
+import os
+import csv
 import cv2
 import numpy as np
+import seaborn as sns
 from pathlib import Path
 import matplotlib.pyplot as plt
 
@@ -36,10 +39,10 @@ class ColorHist:
         self.green_channel = cv2.calcHist(self.img, [1], None, [512], [0, 256])
         self.blue_channel = cv2.calcHist(self.img, [2], None, [512], [0, 256])
 
-
     def get_corresponding_edge(self):
 
-        self.corresponding_edge = self.EDGES / self.category / 'gaussian' / self.filename
+        self.corresponding_edge = self.EDGES /\
+                self.category / 'gaussian' / self.filename
         self.corresponding_edge = str(self.corresponding_edge.resolve())
         self.corresponding_edge = cv2.imread(self.corresponding_edge)
 
@@ -60,6 +63,7 @@ class ColorHist:
             [self.blue_channel]
             ])
         self.merged = self.merged.flatten()
+        return self.merged
 
     def show_plots(self):
 
@@ -73,13 +77,54 @@ class ColorHist:
         plt.show()
 
 
+def run_category(category):
+
+    category_vectors = []
+
+    base_path = DATA / category
+    base_images = os.listdir(base_path)
+    base_images = [str(Path(base_path / i)) for i in base_images]
+
+    def _builder(file):
+
+        hist_obj = ColorHist(file)
+        hist_obj.get_color_hist()
+        hist_obj.get_corresponding_edge()
+        hist_obj.get_edge_map()
+        vector = hist_obj.merge_hists()
+
+        return vector
+
+    for i in base_images:
+
+        combined = _builder(i)
+        combined = combined
+        category_vectors.append(combined)
+
+    return category_vectors
+
+
+def get_features(categories):
+
+    feature_dict = {}
+
+    for i in categories:
+
+        feature_dict[i] = run_category(i)
+
+    return feature_dict
+
+
+def dump_features(categories, feature_dict):
+
+    for i in categories:
+        np.savetxt(f'./features/{i}.csv',
+                   feature_dict[i],
+                   delimiter=',',
+                   fmt='%12.8f')
+
+
 if __name__ == '__main__':
 
-    obj = ColorHist(str(DATA / 'glass' / 'glass276.jpg'))
-    obj.get_color_hist()
-    obj.get_corresponding_edge()
-    obj.get_edge_map()
-    obj.show_plots()
-    obj.merge_hists()
-    obj.merged = obj.merged.flatten()
-
+    features = get_features(DATA_CATEGORIES)
+    dump_features(DATA_CATEGORIES, features)
