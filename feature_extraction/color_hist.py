@@ -79,3 +79,6 @@ if __name__ == '__main__':
     obj.get_corresponding_edge()
     obj.get_edge_map()
     obj.show_plots()
+    obj.merge_hists()
+    obj.merged = obj.merged.flatten()
+
