@@ -59,6 +59,7 @@ class ColorHist:
             [self.green_channel],
             [self.blue_channel]
             ])
+        self.merged = self.merged.flatten()
 
     def show_plots(self):
 
