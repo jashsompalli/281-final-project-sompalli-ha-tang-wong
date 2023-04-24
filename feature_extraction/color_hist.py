@@ -5,7 +5,7 @@ import numpy as np
 import seaborn as sns
 from pathlib import Path
 import matplotlib.pyplot as plt
-
+import skimage
 # Define the static things that we need
 
 DATA = Path('../dataset-resized')
@@ -30,7 +30,6 @@ class ColorHist:
         self.EDGES = Path(relative_output_dir)
 
     def get_color_hist(self):
-
         '''
         This does NOT have an issue
         '''
@@ -41,8 +40,8 @@ class ColorHist:
 
     def get_corresponding_edge(self):
 
-        self.corresponding_edge = self.EDGES /\
-                self.category / 'gaussian' / self.filename
+        self.corresponding_edge = self.EDGES / \
+            self.category / 'gaussian' / self.filename
         self.corresponding_edge = str(self.corresponding_edge.resolve())
         self.corresponding_edge = cv2.imread(self.corresponding_edge)
 
@@ -54,14 +53,19 @@ class ColorHist:
         self.edges = np.asarray(self.edges)
         self.edges = np.reshape(self.edges, (512, 1))
 
+    def get_lbp(self, p=10, r=40):
+        self.lbp = np.asarray(
+            skimage.feature.local_binary_pattern(cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY), p, r))
+
     def merge_hists(self):
 
         self.merged = np.array([
+            [self.lbp],
             [self.edges],
             [self.red_channel],
             [self.green_channel],
             [self.blue_channel]
-            ])
+        ])
         self.merged = self.merged.flatten()
         return self.merged
 
